@@ -1,0 +1,67 @@
+## Rachel Li (SHU-YING, LI) 
+## Week 1 (2023.11.5) ALY6010 Probability Theory and Introductory Statistics
+
+LungCapDataCSV <- read.csv("LungCapDataCSV.csv")
+head(LungCapDataCSV)
+
+# Use the function names to produce the column names for your data set.
+names(LungCapDataCSV)
+
+# Use the view function to view the data set in a separate tab.
+View(LungCapDataCSV)
+
+# Use the glimpse function to view your data set in another configuration.
+install.packages("dplyr")
+library("dplyr")
+glimpse(LungCapDataCSV)
+
+# Use p_load to install the janitor package. 
+p_load(janitor)
+
+# Use cleaned_LungCapDataCSV to clean the column names
+cleaned_LungCapDataCSV <- clean_names(LungCapDataCSV)
+cleaned_LungCapDataCSV
+
+#smoke yes and no
+frequency_table <- table(cleaned_LungCapDataCSV$smoke)
+print(frequency_table)
+
+#smoke yes and no with gender
+cross_table <- table(cleaned_LungCapDataCSV$gender, cleaned_LungCapDataCSV$smoke)
+print(cross_table)
+
+
+# Use hist() function to create a histogram for visualizing the distribution of numerical data.
+hist(cleaned_LungCapDataCSV$lung_cap, main = "Histogram of Lung Capacity", xlab = "Lung Capacity")
+
+
+# Create a Histogram
+smoke_counts <- table(cleaned_LungCapDataCSV$smoke)
+
+barplot(smoke_counts, col = "blue", 
+        main = "Histogram of Smoke",
+        xlab = "Smoke (no/yes)",
+        ylab = "Number of People",
+        names.arg = names(smoke_counts))
+
+# Install and load the ggplot2 package 
+install.packages("ggplot2")
+library(ggplot2)
+
+# Create a Cross-Tabulation
+cross_table <- table(cleaned_LungCapDataCSV$gender, cleaned_LungCapDataCSV$smoke)
+
+# Convert the Cross-Tabulation to a data frame
+cross_table_df <- as.data.frame(cross_table)
+names(cross_table_df) <- c("Gender", "Smoke", "Frequency")
+
+# Create a Stacked Bar Chart
+ggplot(cross_table_df, aes(x = Gender, y = Frequency, fill = Smoke)) +
+  geom_bar(stat = "identity", position = "stack") +
+  labs(
+    title = "Stacked Bar Chart of Gender and Smoke",
+    x = "Gender",
+    y = "Frequency",
+    fill = "Smoke"
+  )
+
